@@ -9,18 +9,20 @@
 #include <string>
 #include <variant>
 
+// 定义我们的数字类型是 double
 using Num = double;
 
+// 符号种类
 enum class Symbol {
-    Uninitialized,
-    LeftBracket,
-    RightBracket,
-    Add,
-    Sub,
-    Mul,
-    Div,
-    Blank,
-    End,
+    Uninitialized,  // 未定义
+    LeftBracket,    // 左括号
+    RightBracket,   // 右括号
+    Add,            // + 号
+    Sub,            // - 号
+    Mul,            // * 号
+    Div,            // / 号
+    Blank,          // 空格
+    End,            // 输入结束符号
 };
 
 class Token {
@@ -48,13 +50,18 @@ public:
     void SetOrigin(const std::string &origin) {
         Token::origin = origin;
     }
+
+    // 输出用函数。
     friend std::ostream &operator<<(std::ostream &output, const Token &token) {
         output << "token:{ position: " << token.position;
-        if (std::get_if< Num >(&token.content) != nullptr) {
-            output << ", content: Num(" << std::get< Num >(token.content)<<")";
+        if (token.content.index() == 0) {
+            output << ", content: Num(" << std::get< Num >(token.content) << ")";
         }
-        else {
+        else if (token.content.index() == 1) {
             switch (std::get< Symbol >(token.content)) {
+            case Symbol::Uninitialized: {
+                break;
+            }
             case Symbol::LeftBracket: {
                 output << ", content: '('";
                 break;
@@ -95,9 +102,9 @@ public:
     }
 
 private:
-    size_t                      position;
-    std::variant< Num, Symbol > content;
-    std::string                 origin;
+    size_t                      position;  // token 在输入串的位置
+    std::variant< Num, Symbol > content;   // token 的内容
+    std::string                 origin;    // token 的原输入
 };
 
 #endif  // CPP_PARSE_SRC_TOKEN_TOKEN_HPP_

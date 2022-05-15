@@ -13,7 +13,7 @@ class TokenParse {
 
 public:
     // 解析字符串，输出 Tokens 的函数
-    static std::variant< std::vector< Token >, std::string > parse(const std::string &input);
+    static std::variant< std::vector< Token >, std::string > Parse(const std::string &input);
 };
 
 #endif  // CPP_PARSE_SRC_TOKEN_TOKENPARSE_HPP_
